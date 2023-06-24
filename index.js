@@ -1,11 +1,26 @@
 const { Server } = require("socket.io");
-
+const express = require('express');
+const path = require('path');
+const app = express()
+const port = 3000
 const io = new Server(8000, {
   cors: true,
 });
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
+
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/index.html'));
+});
+
+
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
